@@ -11,7 +11,7 @@ export function setupServer() {
     app.use(cors());
     app.use(express.json());
 
-    app.get('/api/contacts', async (req, res) => {
+    app.get('/contacts', async (req, res) => {
         const contacts = await Contact.find();
         res.json({
             status: 200,
@@ -20,7 +20,7 @@ export function setupServer() {
         });
     });
 
-    app.get('/api/contacts/:contactId', async (req, res) => {
+    app.get('/contacts/:contactId', async (req, res) => {
         const contactId = req.params.contactId;
         const contact = await Contact.findById(contactId);
             
