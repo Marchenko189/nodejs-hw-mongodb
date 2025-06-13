@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
+import path from 'path';
 
 dotenv.config();
 
-import path from 'path';
 
 export const SORT_ORDER = {
     ASC: 'asc',
