@@ -105,11 +105,37 @@ export const requestResetToken = async (email) => {
 
   const linkReset = `${getEnvVar('APP_DOMAIN')}/reset-password?token=${resetToken}`;
 
-  await sendMail({
+  await sendEmail({
     from: getEnvVar(SMTP.SMTP_FROM),
     to: email,
     subject: 'Reset your password',
     html: `<p>Click <a href="${linkReset}">here</a> to reset your password!</p>`,
   });
+};
 
+export const resetPassword = async (payload) => {
+  let entries;
+
+  try {
+    entries = jwt.verify(payload.token, getEnvVar('JWT_SECRET'));
+  } catch (err) {
+    if (err instanceof Error) throw createHttpError(401, 'Token is expired or invalid.');
+    throw err;
+  }
+
+  const user = await User.findOne({
+    email: entries.email,
+    _id: entries.sub,
+  });
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+
+  await User.updateOne(
+    { _id: user._id },
+    { password: encryptedPassword },
+  );
 };
