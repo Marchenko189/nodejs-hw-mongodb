@@ -28,16 +28,6 @@ parameters:
     schema:
       type: string
       example: '_id'
-  - in: query
-    name: filter
-    schema:
-      type: object
-      example: {}
-  - in: query
-    name: userId
-    schema:
-      type: string
-      example: 643sfhzsgr46fvnfsc4652
 responses:
   '200':
     description: 'Get contacts'
@@ -89,5 +79,7 @@ responses:
                 hasPreviousPage:
                   type: boolean
                   example: true
+  '401':
+    $ref: '../../components/responses/401.yaml'
   '404':
     $ref: '../../components/responses/404.yaml'

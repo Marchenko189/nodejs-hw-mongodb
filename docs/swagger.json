@@ -77,22 +77,6 @@
               "type": "string",
               "example": "_id"
             }
-          },
-          {
-            "in": "query",
-            "name": "filter",
-            "schema": {
-              "type": "object",
-              "example": {}
-            }
-          },
-          {
-            "in": "query",
-            "name": "userId",
-            "schema": {
-              "type": "string",
-              "example": "643sfhzsgr46fvnfsc4652"
-            }
           }
         ],
         "responses": {
@@ -164,6 +148,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
           },
           "404": {
             "$ref": "#/components/responses/404"
@@ -263,6 +250,9 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
           "404": {
             "$ref": "#/components/responses/404"
           }
@@ -322,6 +312,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
           },
           "404": {
             "$ref": "#/components/responses/404"
@@ -425,6 +418,9 @@
               }
             }
           },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
           "404": {
             "$ref": "#/components/responses/404"
           }
@@ -454,6 +450,12 @@
           }
         ],
         "responses": {
+          "204": {
+            "description": "Successfully deleted"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
           "404": {
             "$ref": "#/components/responses/404"
           }
@@ -500,7 +502,7 @@
             "example": "qwerty123@gmail.com"
           },
           "contactType": {
-            "description": "Student's age",
+            "description": "Type of contact",
             "type": "string",
             "enum": [
               "work",
@@ -509,7 +511,7 @@
             ]
           },
           "isFavourite": {
-            "description": "Favourite contact's",
+            "description": "Indicates whether the contact is marked as favourite",
             "type": "boolean",
             "example": false
           },
@@ -521,12 +523,49 @@
           "photo": {
             "description": "Link to contact's photo",
             "type": "string",
-            "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
+            "format": "binary"
           }
         }
       }
     },
     "responses": {
+      "401": {
+        "description": "Unauthorized - Access token is missing or invalid",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "UnauthorizedError"
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Please provide Authorization header"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "404": {
         "description": "Contact not found",
         "content": {
